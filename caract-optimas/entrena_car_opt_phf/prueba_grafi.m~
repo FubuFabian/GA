@@ -1,0 +1,13 @@
+
+
+x0=300;
+y0=300;
+raiz_tres_alfa=200;
+for x=round(x0-raiz_tres_alfa):round(x0+raiz_tres_alfa)
+    for y=round(y0-raiz_tres_alfa): round(y0+raiz_tres_alfa)
+        H(bin+1)=H(bin+1)+exp(-((x-x0)^2+(y-y0)^2)/dos_alfa_2)*exp(-((A(y,x)-bin)^2)/dos_beta_2);
+       %Z(y,x)=exp(-((x-x0)^2+(y-y0)^2)/dos_al
+       %fa_2); %esta linea tabula la exp para
+       %graficacion
+    end            
+end 

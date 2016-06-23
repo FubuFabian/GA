@@ -1,0 +1,120 @@
+
+% mgm_optimas_prostata.m
+% creado el 19 de oct. 2005
+% programa para construir el MGM de las muestras de entrenamiento de 60
+% caract. optimas
+
+clear
+NoPM=35;
+%************************************************************************
+% lectura de las muestras de entrenamiento para el clasificador KNN, K=5
+%************************************************************************
+% NOMENTRE=[ 'an-u3-14-01-al.con';
+% %'an-u3-14-02-al.con';
+% %'an-u3-14-03-al.con';
+% %'an-u3-14-04-al.con';
+% %'an-u3-14-05-al.con';
+% %'an-u3-14-06-al.con';
+% %'an-u3-15-02-al.con';
+% %'an-u3-15-03-al.con';
+% %'an-u3-15-04-al.con';
+% %'an-u3-15-05-al.con';
+% %'an-u3-15-06-al.con';
+% 'an-u3-16-03-al.con';
+% %'an-u3-16-04-al.con';
+% %'an-u3-16-05-al.con';
+% %'an-u3-16-06-al.con';
+% %'an-u3-16-07-al.con';
+% %'an-u3-17-00-al.con';
+% %'an-u3-17-05-al.con';
+% %'an-u3-18-00-al.con';
+% %'an-u3-18-01-al.con';
+% %'an-u3-18-02-al.con';
+% %'an-u3-18-03-al.con';
+% %'an-u3-18-04-al.con';
+% %'an-u3-18-05-al.con';
+% ];
+
+% NOMENTRE=[ 
+% 'an-u3-14-02-al.con';
+% 'an-u3-18-04-al.con';
+% 'an-u3-15-03-al.con';
+% 'an-u3-16-03-al.con';
+% 'an-u3-15-05-al.con';
+% 'an-u3-16-05-al.con';
+% 'an-u3-17-05-al.con';
+% 'an-u3-14-04-al.con';
+% ];
+
+NOMENTRE=[ 
+'an-u3-14-03-al.con';
+'an-u3-18-05-al.con';
+'an-u3-15-04-al.con';
+'an-u3-16-04-al.con';
+'an-u3-17-05-al.con';
+];
+[renentre, colentre]=size(NOMENTRE);
+%figure
+%axis equal
+%hold on
+for imagen=1:renentre % repetimos el ciclo para todos los archivos
+   name=NOMENTRE(imagen,:);
+   name=name(4:11);
+   name=strcat('v5x5_60car_', name, '.txt');
+   fid=fopen(name, 'r');
+	for j=1:35
+		L=fscanf(fid, '%c',20);
+		LN=fscanf(fid, '%d\n',1);
+			for i=1:25
+				P=fscanf(fid, '%c',6);
+				PN=fscanf(fid, '%d\n',1);
+				P=fscanf(fid, '%c\n',24);
+				IO((j-1)*25+i, imagen)=fscanf(fid, '%d\n',1);
+				CAR=fscanf(fid, '%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f \n', 60);
+				MUE_ENTRE((j-1)*25+i,:, imagen)=CAR';
+			end
+	end
+	fclose(fid);
+end % for imagen=1:renentre
+[ren_MUE_ENTRE col_MUE_ENTRE capas_MUE_ENTRE]=size(MUE_ENTRE);
+
+% SEPARAMOS EN MUESTRAS DE PROSTATA Y MUESTRAS DE FONDO
+indicep=1;
+indicef=1;
+for imagen=1:renentre
+    for pixel=1:ren_MUE_ENTRE
+        if IO(pixel,imagen)==1
+            MUE_PROS(indicep,:)=MUE_ENTRE(pixel,:,imagen);    
+            indicep=indicep+1;
+        else
+            MUE_FONDO(indicef,:)=MUE_ENTRE(pixel,:,imagen);         
+            indicef=indicef+1;
+        end
+    end % for pixel
+end % for imagen
+%****************************************************************************
+keyboard
+
+% Construccion del modelo mezclado gaussiano
+% por: Roger Jang 20000610
+%PROSTATA
+gaussNum=10; % No. inicial de gaussianas
+dispOpt= 1; %desplegar status
+[M, V, W, logprob] = gmmTrain(muestras, gaussNum, dispOpt)
+
+
+
+
+
+% save 'car_opt_todos_puntos.txt' CAROPT -ASCII
+% 
+% save 'car_opt_todos_puntos_sX1.txt' CAROPT_TODAS -ASCII
+% 
+% save 'errores_60car.txt' ERRORES -ASCII
+% 
+% save 'errores_60car_sX1.txt' ERRORESx1 -ASCII
+
+			
+
+
+
