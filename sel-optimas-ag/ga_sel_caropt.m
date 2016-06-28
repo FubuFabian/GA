@@ -8,8 +8,8 @@
 % History:    23-Mar-94     file created
 
 
-clear
-NoPM=35;
+%clear
+%NoPM=35;
 
 %************************************************************************
 % lectura de las muestras de entrenamiento para el clasificador KNN, K=5
@@ -41,7 +41,7 @@ NoPM=35;
 % ];
 
 NOMENTRE=[ 
- 'an-u3-14-02-al.con';
+'an-u3-14-02-al.con';
 'an-u3-18-04-al.con';
 % 'an-u3-15-03-al.con';
 % 'an-u3-16-03-al.con';
@@ -51,16 +51,17 @@ NOMENTRE=[
 % 'an-u3-14-04-al.con';
 ];
 [renentre, colentre]=size(NOMENTRE);
-renval=ceil(renentre/2); % separamos (renentre-renval) archivos para enterenamiento y (renval) archivos para validacion
-rentotal=renentre;
-%figure
-%axis equal
-%hold on
+renval=ceil(renentre/2) % separamos (renentre-renval) archivos para enterenamiento y (renval) archivos para validacion
+rentotal=renentre
+figure
+axis equal
+hold on
+
 for imagen=1:renentre % repetimos el ciclo para todos los archivos
-   name=NOMENTRE(imagen,:);
-   name=name(4:11);
-   name=strcat('v5x5_60car_', name, '.txt');
-   fid=fopen(name, 'r');
+  name=NOMENTRE(imagen,:)
+  name=name(4:11)
+  name=strcat('v5x5_60car_', name, '.txt')
+  fid=fopen(name, 'r');
 	for j=1:35
 		L=fscanf(fid, '%c',20);
 		LN=fscanf(fid, '%d\n',1);
@@ -75,6 +76,91 @@ for imagen=1:renentre % repetimos el ciclo para todos los archivos
 	end
 	fclose(fid);
 end % for imagen=1:renentre
+
+% [fileImages, pathImages, wtv] = uigetfile('*.bmp','Load Images','MultiSelect', 'on');
+% 
+% if ischar(fileImages)
+%     nImages = 1;
+% else
+%     [wtv nImages] = size(fileImages);
+% end
+% 
+% [fileTumors, pathTumors, wtv] = uigetfile('*.mat','Load Tumor Segmentation');
+% 
+% tumorsFilename = strcat(pathTumors,fileTumors);
+%  
+% tumors = load(tumorsFilename);
+% tumors = tumors.tumors;
+% [fileBackgrounds, pathBackgrounds, wtv] = uigetfile('*.mat','Load Background Segmentation');
+% 
+%  
+% backgroundsFilename = strcat(pathBackgrounds,fileBackgrounds);
+%  
+% backgrounds = load(backgroundsFilename);
+% backgrounds = backgrounds.backgrounds;
+% 
+% nOfSamples = 0;
+% 
+% histPath = 'C:/Users/Public/Documents/Breast Tumor Segmentation/Tumor Segmentation Matlab/Resultados/Homogeneous/Imagenes/Histogram/';
+% haralickPath = 'C:/Users/Public/Documents/Breast Tumor Segmentation/Tumor Segmentation Matlab/Resultados/Homogeneous/Imagenes/Haralick/';
+% runPath = 'C:/Users/Public/Documents/Breast Tumor Segmentation/Tumor Segmentation Matlab/Resultados/Homogeneous/Imagenes/RunLength/';
+% 
+% for i=1:nImages
+%    
+%    imDif = imread(strcat(histPath,fileImages{i}(1:end-4),'_Diferencia.bmp')); 
+%    imEnt = imread(strcat(histPath,fileImages{i}(1:end-4),'_Entropia.bmp'));
+%    imKurt = imread(strcat(histPath,fileImages{i}(1:end-4),'_Kurtosis.bmp'));
+%    imMedia = imread(strcat(histPath,fileImages{i}(1:end-4),'_Media.bmp'));
+%    imSkew = imread(strcat(histPath,fileImages{i}(1:end-4),'_Skewness.bmp'));
+%    imStd = imread(strcat(histPath,fileImages{i}(1:end-4),'_Std.bmp'));
+%    imCont = imread(strcat(haralickPath,fileImages{i}(1:end-4),'_Contrast.bmp'));
+%    imCorrel = imread(strcat(haralickPath,fileImages{i}(1:end-4),'_Correlation.bmp'));
+%    imEnergy = imread(strcat(haralickPath,fileImages{i}(1:end-4),'_Energy.bmp'));
+%    imHomo = imread(strcat(haralickPath,fileImages{i}(1:end-4),'_Homogeneity.bmp'));
+%    imVar = imread(strcat(haralickPath,fileImages{i}(1:end-4),'_Variance.bmp'));
+%    imGLN = imread(strcat(runPath,fileImages{i}(1:end-4),'_GLN.bmp'));
+%    imHGRE = imread(strcat(runPath,fileImages{i}(1:end-4),'_HGRE.bmp'));
+%    imLGRE = imread(strcat(runPath,fileImages{i}(1:end-4),'_LGRE.bmp'));
+%    imLRE = imread(strcat(runPath,fileImages{i}(1:end-4),'_LRE.bmp'));
+%    imLRHGE = imread(strcat(runPath,fileImages{i}(1:end-4),'_LRHGE.bmp'));
+%    imLRLGE = imread(strcat(runPath,fileImages{i}(1:end-4),'_LRLGE.bmp'));
+%    imRLN = imread(strcat(runPath,fileImages{i}(1:end-4),'_RLN.bmp'));
+%    imRP = imread(strcat(runPath,fileImages{i}(1:end-4),'_RP.bmp'));
+%    imSRE = imread(strcat(runPath,fileImages{i}(1:end-4),'_SRE.bmp'));
+%    imSRHGE = imread(strcat(runPath,fileImages{i}(1:end-4),'_SRHGE.bmp'));
+%    imSRLGE = imread(strcat(runPath,fileImages{i}(1:end-4),'_SRLGE.bmp'));
+%    
+%    tumor = tumors{i};
+%    tumorSize = size(tumor);
+%    nOfTumorPix = (tumorSize(1)*tumorSize(2)*10)/100;
+%   
+%    tumorSample = datasample(tumor,nOfTumorPix);
+%    
+%    background = backgrounds{i};
+%    backgroundSize = size(background);
+%    nOfBackPix = (backgroundSize(1)*backgroundSize(2)*10)/100;
+%    
+%    backgroundSample = datasample(background,nOfBackPix);
+%    
+%    for j=1:nOfTumorPix
+%        
+%        nOfSamples = nOfSamples + 1;
+%        pix = tumorSample(j);
+%        CAR = [imDif(pix) imEnt(pix) imKurt(pix) imMedia(pix) imSkew(pix) imStd(pix) imCont(pix) imCorrel(pix) imEnergy(pix) imHomo(pix) imVar(pix) imGLN(pix) imHGRE(pix) imLGRE(pix) imLRE(pix) imLRHGE(pix) imLRLGE(pix) imRLN(pix) imRP(pix) imSRE(pix) imSRHGE(pix) imSRLGE(pix)];
+%        
+%              
+%    end
+%        
+%    for j=1:nOfBackPix
+%        
+%        nOfSamples = nOfSamples + 1;
+%        pix = backgroundSample(j);
+%        CAR = [imDif(pix) imEnt(pix) imKurt(pix) imMedia(pix) imSkew(pix) imStd(pix) imCont(pix) imCorrel(pix) imEnergy(pix) imHomo(pix) imVar(pix) imGLN(pix) imHGRE(pix) imLGRE(pix) imLRE(pix) imLRHGE(pix) imLRLGE(pix) imRLN(pix) imRP(pix) imSRE(pix) imSRHGE(pix) imSRLGE(pix)];
+%        
+%        
+%    end
+%     
+% end
 
 %****************************************************************************
 %***********  ALGORITMO GENETICO PA' SELECCION OPTIMA *******************
